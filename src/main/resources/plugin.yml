@@ -1,0 +1,4 @@
+name: Rubylib
+version: '${project.version}'
+main: me.itsadrift.rubylib.Rubylib
+api-version: 1.18

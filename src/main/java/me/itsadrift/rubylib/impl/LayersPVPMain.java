@@ -12,7 +12,7 @@ public class LayersPVPMain {
     public void onEnable() {
         rubyLib = RubyLib.getInstance();
 
-        gameSettings = new GameSettings(GameSettings.ArenaType.SINGLE, GameSettings.ArenaLoad.NONE);
+        gameSettings = new GameSettings(8, GameSettings.ArenaType.SINGLE, GameSettings.ArenaLoad.NONE);
     }
 
     public void startNewGame() {

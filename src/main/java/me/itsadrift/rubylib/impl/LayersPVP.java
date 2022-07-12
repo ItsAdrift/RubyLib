@@ -21,7 +21,7 @@ public class LayersPVP extends Game {
     }
 
     @Override
-    public void onStartGame() {
+    public void onStart() {
         // teleport players to their spawn location
         // start timer for layers to disappear
         // make layers disappear
@@ -36,7 +36,7 @@ public class LayersPVP extends Game {
     }
 
     @Override
-    public void onStopGame() {
+    public void onStop() {
         // teleport all players/spectators to spawn
         // reset/clear arena
     }

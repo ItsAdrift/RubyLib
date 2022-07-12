@@ -52,6 +52,10 @@ public class GameParticipant {
         return team;
     }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     public boolean isAlive() {
         return isAlive;
     }

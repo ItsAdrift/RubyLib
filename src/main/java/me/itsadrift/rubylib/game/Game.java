@@ -22,9 +22,8 @@ public abstract class Game implements Listener {
     private Arena arena;
     private GameState gameState;
 
-    private HashMap<String, Team> teams = new HashMap<>();
+    private final HashMap<String, Team> teams = new HashMap<>();
     private final List<GameParticipant> players = new ArrayList<>();
-
 
     public Game(String id, GameSettings gameSettings) {
         this.id = id;
@@ -33,12 +32,18 @@ public abstract class Game implements Listener {
         setGameState(GameState.WAITING);
     }
 
-    public abstract void onStartGame();
-    public abstract void onStopGame();
+    public abstract void onStart();
+    private void start() {
+        // Team sorting- taking into account a party system
+    }
+    public abstract void onStop();
+    private void stop() {
+
+    }
     public abstract void tickSecond();
 
     public GameParticipant getPlayer(Player player) {
-        return  getPlayer(player.getUniqueId());
+        return getPlayer(player.getUniqueId());
     }
 
     public GameParticipant getPlayer(UUID uuid) {
@@ -50,16 +55,74 @@ public abstract class Game implements Listener {
         return null;
     }
 
+    public void join(Player player) {
+        GameParticipant p = new GameParticipant(player, this);
+        players.add(p);
+    }
+
+    public void leave(Player player) {
+        players.remove(getPlayer(player));
+    }
+
+    /**
+     * Register a new team
+     * @param id - The id used to identify the team
+     * @param team - The team object
+     */
+    public void registerTeam(String id, Team team) {
+        teams.put(id, team);
+    }
+
+    /**
+     * Unregister a team
+     * @param id - he id used to identify the team
+     */
+    public void unregisterTeam(String id) {
+        teams.remove(id);
+    }
+
+    /**
+     * Get a team
+     * @param id - The id used to identify the team
+     * @return The team identified by id
+     */
+    public Team getTeam(String id) {
+        return teams.get(id);
+    }
+
+    /**
+     * Broadcast a message to all players involved in a game
+     * @param message - The message to send
+     */
+    public void broadcast(String message) {
+        getPlayers().forEach(player -> player.sendMessage(message));
+    }
+
+    /**
+     * Change the game state of a game
+     * @param gameState - The new game state
+     * @see GameState
+     */
+    public void setGameState(GameState gameState) {
+        MinigameStateChangeEvent e = new MinigameStateChangeEvent(this, this.gameState, gameState);
+        Bukkit.getPluginManager().callEvent(e);
+        if (e.isCancelled())
+            return;
+        this.gameState = e.getNewGameState();
+    }
+
+    /*
+        Getters/Setters
+     */
+
     public Arena getArena() {
         return arena;
     }
 
+    public void setArena(Arena arena) { this.arena = arena; }
+
     public List<GameParticipant> getPlayers() {
         return players;
-    }
-
-    public void broadcast(String s) {
-        getArena().broadcast(s);
     }
 
     public String getId() {
@@ -78,23 +141,7 @@ public abstract class Game implements Listener {
         return gameState;
     }
 
-    public void registerTeam(String id, Team team) {
-        teams.put(id, team);
-    }
-
-    public void unregisterTeam(String id) {
-        teams.remove(id);
-    }
-
-    public Team getTeam(String id) {
-        return teams.get(id);
-    }
-
-    public void setGameState(GameState gameState) {
-        MinigameStateChangeEvent e = new MinigameStateChangeEvent(this, this.gameState, gameState);
-        Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled())
-            return;
-        this.gameState = e.getNewGameState();
+    public GameSettings getGameSettings() {
+        return gameSettings;
     }
 }

@@ -12,18 +12,7 @@ public class Arena {
 
     private IArenaGenerator generator;
 
-    private List<GameParticipant> players;
-    public Arena(List<GameParticipant> players, IArenaGenerator generator) {
+    public Arena(IArenaGenerator generator) {
         this.generator = generator;
-
-        this.players = players;
-    }
-
-    public List<GameParticipant> getPlayers() {
-        return players;
-    }
-
-    public void broadcast(String s) {
-        getPlayers().forEach(player -> player.sendMessage(s));
     }
 }

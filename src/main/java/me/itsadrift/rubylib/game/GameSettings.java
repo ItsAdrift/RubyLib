@@ -1,8 +1,11 @@
 package me.itsadrift.rubylib.game;
 
+import me.itsadrift.rubylib.arena.generation.IArenaGenerator;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class GameSettings {
+
+    private int maxPlayers = 8;
 
     private ArenaType arenaType;
     private ArenaLoad arenaLoad;
@@ -14,9 +17,14 @@ public class GameSettings {
     private FileConfiguration config;
     private String configPath;
 
-    public GameSettings(ArenaType arenaType, ArenaLoad arenaLoad) {
+    public GameSettings(int maxPlayers, ArenaType arenaType, ArenaLoad arenaLoad) {
+        this.maxPlayers = maxPlayers;
         this.arenaType = arenaType;
         this.arenaLoad = arenaLoad;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
     }
 
     public ArenaType getArenaType() {

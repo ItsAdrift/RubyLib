@@ -1,15 +1,19 @@
 package me.itsadrift.rubylib.minigame.player;
 
 import me.itsadrift.rubylib.game.Game;
+import me.itsadrift.rubylib.minigame.teams.Team;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public abstract class GameParticipant {
+public class GameParticipant {
 
-    protected Player player;
-    protected Game minigame;
+    private Team team;
+    private Player player;
+    private Game minigame;
+
+    private boolean isAlive = true;
 
     public GameParticipant(Player player, Game minigame) {
         this.player = player;
@@ -22,6 +26,10 @@ public abstract class GameParticipant {
 
     public void teleport(Location location) {
         player.teleport(location);
+    }
+
+    public void sendMessage(String s) {
+        player.sendMessage(s);
     }
 
     public Location getLocation() {
@@ -40,4 +48,15 @@ public abstract class GameParticipant {
         return player;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
 }

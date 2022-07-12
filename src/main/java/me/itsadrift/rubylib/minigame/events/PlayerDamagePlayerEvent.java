@@ -9,7 +9,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerDamagePlayerEvent extends Event implements Cancellable {
+public class PlayerDamagePlayerEvent extends MinigameEvent implements Cancellable {
 
 
     private static final HandlerList handlers = new HandlerList();
@@ -55,6 +55,7 @@ public class PlayerDamagePlayerEvent extends Event implements Cancellable {
         this.cancelled = cancelled;
     }
 
+    @Override
     public Game getGame() {
         return game;
     }

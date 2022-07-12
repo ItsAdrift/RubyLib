@@ -1,4 +1,4 @@
-package impl;
+package me.itsadrift.rubylib.impl;
 
 import org.bukkit.event.Listener;
 

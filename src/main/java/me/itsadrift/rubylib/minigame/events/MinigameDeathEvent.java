@@ -1,7 +1,7 @@
 package me.itsadrift.rubylib.minigame.events;
 
 import me.itsadrift.rubylib.game.Game;
-import me.itsadrift.rubylib.minigame.player.AlivePlayer;
+import me.itsadrift.rubylib.minigame.player.GameParticipant;
 import me.itsadrift.rubylib.minigame.teams.Team;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class MinigameDeathEvent extends Event implements Cancellable {
+public class MinigameDeathEvent extends MinigameEvent implements Cancellable {
 
     private Game game;
-    private AlivePlayer victim;
-    private AlivePlayer killer;
+    private GameParticipant victim;
+    private GameParticipant killer;
     private PlayerDeathEvent deathEvent;
     private PlayerDamagePlayerEvent damageEvent;
     private long time;
@@ -23,7 +23,7 @@ public class MinigameDeathEvent extends Event implements Cancellable {
     private static final HandlerList HANDLERS_LIST = new HandlerList();
     private boolean isCancelled;
 
-    public MinigameDeathEvent(Game match, AlivePlayer victim, PlayerDeathEvent deathEvent) {
+    public MinigameDeathEvent(Game match, GameParticipant victim, PlayerDeathEvent deathEvent) {
         this.game = match;
         this.victim = victim;
         this.deathEvent = deathEvent;
@@ -33,7 +33,7 @@ public class MinigameDeathEvent extends Event implements Cancellable {
     }
 
 
-    public MinigameDeathEvent(Game match, AlivePlayer victim, AlivePlayer killer, PlayerDamagePlayerEvent damageEvent, PlayerDeathEvent deathEvent) {
+    public MinigameDeathEvent(Game match, GameParticipant victim, GameParticipant killer, PlayerDamagePlayerEvent damageEvent, PlayerDeathEvent deathEvent) {
         this(match, victim, deathEvent);
         this.killer = killer;
         this.damageEvent = damageEvent;
@@ -61,6 +61,7 @@ public class MinigameDeathEvent extends Event implements Cancellable {
     /**
      * Get the match the player died in
      */
+    @Override
     public Game getGame() {
         return game;
     }
@@ -69,7 +70,7 @@ public class MinigameDeathEvent extends Event implements Cancellable {
     /**
      * Get the player who died
      */
-    public AlivePlayer getPlayer() {
+    public GameParticipant getPlayer() {
         return victim;
     }
 
@@ -77,7 +78,7 @@ public class MinigameDeathEvent extends Event implements Cancellable {
     /**
      * The player who killed the victim
      */
-    public AlivePlayer getKiller() {
+    public GameParticipant getKiller() {
         return killer;
     }
 

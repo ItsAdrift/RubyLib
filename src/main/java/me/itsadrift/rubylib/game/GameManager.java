@@ -1,5 +1,8 @@
 package me.itsadrift.rubylib.game;
 
+import me.itsadrift.rubylib.RubyLib;
+import org.bukkit.Bukkit;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -16,6 +19,16 @@ public class GameManager {
 
     public static GameManager getInstance() {
         return instance;
+    }
+
+    public Game createGame(Game game) {
+        UUID uuid = UUID.randomUUID();
+        instances.put(uuid, game);
+        game.setUUID(uuid);
+
+        Bukkit.getPluginManager().registerEvents(game, RubyLib.getInstance());
+
+        return game;
     }
 
     /**

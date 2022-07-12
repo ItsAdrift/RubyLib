@@ -16,7 +16,7 @@ public class DeathListener implements Listener {
     }
 
     @EventHandler
-    public void onAthenaDeath(MinigameDeathEvent event) {
+    public void onDeath(MinigameDeathEvent event) {
         EntityDamageEvent.DamageCause cause = event.getPlayer().getPlayer().getLastDamageCause().getCause();
         if (event.isPvP()) {
             switch (cause) {
@@ -86,7 +86,7 @@ public class DeathListener implements Listener {
 
     /**
      * Broadcast custom death message after colorizing it
-     * @param event the AthenaDeathEvent we caught
+     * @param event the MinigameDeathEvent we caught
      * @param msg the message to broadcast
      */
     private void broadcast(MinigameDeathEvent event, String msg) {

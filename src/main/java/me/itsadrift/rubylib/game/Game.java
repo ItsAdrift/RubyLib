@@ -1,7 +1,9 @@
 package me.itsadrift.rubylib.game;
 
 import me.itsadrift.rubylib.arena.Arena;
+import me.itsadrift.rubylib.game.teamsorting.TeamSorter;
 import me.itsadrift.rubylib.minigame.events.MinigameStateChangeEvent;
+import me.itsadrift.rubylib.minigame.events.MinigameWinEvent;
 import me.itsadrift.rubylib.minigame.player.GameParticipant;
 import me.itsadrift.rubylib.minigame.teams.Team;
 import org.bukkit.Bukkit;
@@ -22,6 +24,8 @@ public abstract class Game implements Listener {
     private Arena arena;
     private GameState gameState;
 
+    private TeamSorter teamSorter;
+
     private final HashMap<String, Team> teams = new HashMap<>();
     private final List<GameParticipant> players = new ArrayList<>();
 
@@ -34,11 +38,13 @@ public abstract class Game implements Listener {
 
     public abstract void onStart();
     private void start() {
-        // Team sorting- taking into account a party system
+        // Team sorting- in future this will take into account a party system
+        teamSorter.sort(new ArrayList<>(teams.values()), players);
+        onStart();
     }
     public abstract void onStop();
     private void stop() {
-
+        onStop();
     }
     public abstract void tickSecond();
 
@@ -64,10 +70,24 @@ public abstract class Game implements Listener {
         players.remove(getPlayer(player));
     }
 
+    public Team checkForWin() {
+        List<Team> alive = new ArrayList<>();
+        for (Team team : teams.values()) {
+            if (team.getAlivePlayers().size() >= 1)
+                alive.add(team);
+        }
+        if (alive.size() == 1) {
+            MinigameWinEvent e = new MinigameWinEvent(this, alive.get(0));
+            Bukkit.getPluginManager().callEvent(e);
+            return alive.get(0);
+        } else
+            return null;
+    }
+
     /**
      * Register a new team
-     * @param id - The id used to identify the team
-     * @param team - The team object
+     * @param id The id used to identify the team
+     * @param team The team object
      */
     public void registerTeam(String id, Team team) {
         teams.put(id, team);
@@ -75,7 +95,7 @@ public abstract class Game implements Listener {
 
     /**
      * Unregister a team
-     * @param id - he id used to identify the team
+     * @param id The id used to identify the team
      */
     public void unregisterTeam(String id) {
         teams.remove(id);
@@ -83,7 +103,7 @@ public abstract class Game implements Listener {
 
     /**
      * Get a team
-     * @param id - The id used to identify the team
+     * @param id The id used to identify the team
      * @return The team identified by id
      */
     public Team getTeam(String id) {
@@ -114,6 +134,14 @@ public abstract class Game implements Listener {
     /*
         Getters/Setters
      */
+
+    public TeamSorter getTeamSorter() {
+        return teamSorter;
+    }
+
+    public void setTeamSorter(TeamSorter teamSorter) {
+        this.teamSorter = teamSorter;
+    }
 
     public Arena getArena() {
         return arena;

@@ -1,6 +1,8 @@
 package me.itsadrift.rubylib;
 
 import me.itsadrift.rubylib.game.GameManager;
+import me.itsadrift.rubylib.game.GameSettings;
+import me.itsadrift.rubylib.impl.LayersPVP;
 import me.itsadrift.rubylib.minigame.listeners.DeathListener;
 import me.itsadrift.rubylib.minigame.listeners.DeathMessageListener;
 import me.itsadrift.rubylib.minigame.listeners.Tracker;

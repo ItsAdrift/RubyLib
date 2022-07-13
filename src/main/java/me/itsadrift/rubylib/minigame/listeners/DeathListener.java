@@ -8,7 +8,8 @@ public class DeathListener implements Listener {
 
     @EventHandler
     public void onDeath(MinigameDeathEvent e) {
-
+        e.getPlayer().setAlive(false);
+        e.getGame().checkForWin();
     }
 
 }

@@ -8,7 +8,6 @@ import org.bukkit.event.HandlerList;
 
 public class MinigameWinEvent extends MinigameEvent {
     private static final HandlerList handlers = new HandlerList();
-    private boolean cancelled;
 
     private Game game;
     private Team team;
@@ -22,19 +21,8 @@ public class MinigameWinEvent extends MinigameEvent {
         return handlers;
     }
 
-
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
     }
 
     @Override

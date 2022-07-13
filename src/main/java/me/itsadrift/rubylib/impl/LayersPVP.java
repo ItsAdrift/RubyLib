@@ -2,10 +2,13 @@ package me.itsadrift.rubylib.impl;
 
 import me.itsadrift.rubylib.game.Game;
 import me.itsadrift.rubylib.game.GameSettings;
-import me.itsadrift.rubylib.minigame.events.MinigameDeathEvent;
+import me.itsadrift.rubylib.game.teamsorting.DefaultTeamSorting;
+import me.itsadrift.rubylib.minigame.events.MinigameJoinEvent;
 import me.itsadrift.rubylib.minigame.events.MinigameWinEvent;
+import me.itsadrift.rubylib.minigame.teams.Team;
+import me.itsadrift.rubylib.utils.RandomEnum;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 /**
  * Extends on the 'Game' class, handles actual gameplay, etc.
@@ -16,8 +19,14 @@ public class LayersPVP extends Game {
 
     public LayersPVP(GameSettings gameSettings) {
         super("layerspvp", gameSettings);
+        setTeamSorter(new DefaultTeamSorting(this, 2));
 
+        RandomEnum<ChatColor> randomEnum = new RandomEnum<>(ChatColor.class);
+        for (int i = 0; i < 10; i++) {
+            registerTeam("team"+i, new Team("Team 1", randomEnum.random(ChatColor.BOLD, ChatColor.MAGIC, ChatColor.STRIKETHROUGH, ChatColor.UNDERLINE, ChatColor.MAGIC, ChatColor.ITALIC)));
+        }
 
+        // Handle Arena
     }
 
     @Override
@@ -33,6 +42,7 @@ public class LayersPVP extends Game {
         if (!e.appliesToGame(this))
             return;
         e.getTeam().getPlayers().forEach(player -> player.sendMessage("gj u won"));
+        broadcast(e.getTeam().getColor() + ChatColor.BOLD.toString() + e.getTeam().getName() + " has won!");
     }
 
     @Override
@@ -46,4 +56,13 @@ public class LayersPVP extends Game {
         // update countdown scoreboard
         // use this to time layers disappearing
     }
+
+    @EventHandler
+    public void onJoin(MinigameJoinEvent e) {
+        if (!e.appliesToGame(this))
+            return;
+
+
+    }
+
 }

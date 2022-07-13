@@ -31,12 +31,6 @@ public class GameManager {
         UUID uuid = UUID.randomUUID();
         instances.put(uuid, game);
         game.setUUID(uuid);
-        game.setArena(new Arena(new IArenaGenerator() {
-            @Override
-            public Location generate() {
-                return null;
-            }
-        }));
 
         Bukkit.getPluginManager().registerEvents(game, RubyLib.getInstance());
 
@@ -47,15 +41,15 @@ public class GameManager {
      * Attempts to join a game
      * @param game The game to join
      * @param player The player to join
-     * @param followMaxPlayers If we should care about the GameSetting's maxPlayers
+     * @param obeyMaxPlayers If we should care about the GameSetting's maxPlayers
      * @return returns false if the lobby was full
      *
      * @see Game
      * @see GameSettings
      * @see MinigameJoinEvent
      */
-    public boolean joinGame(Game game, Player player, boolean followMaxPlayers) {
-        if ((game.getPlayers().size() >= game.getGameSettings().getMaxPlayers()) && followMaxPlayers)
+    public boolean joinGame(Game game, Player player, boolean obeyMaxPlayers) {
+        if ((game.getPlayers().size() >= game.getGameSettings().getMaxPlayers()) && obeyMaxPlayers)
             return false;
         MinigameJoinEvent e = new MinigameJoinEvent(game, player);
         Bukkit.getPluginManager().callEvent(e);

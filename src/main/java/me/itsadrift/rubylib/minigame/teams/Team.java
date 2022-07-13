@@ -5,6 +5,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Team {
 
@@ -30,11 +31,17 @@ public class Team {
         players.add(player);
     }
 
+    public void addAll(List<GameParticipant> l) { players.addAll(l); }
+
     public void removePlayer(GameParticipant player) {
         players.remove(player);
     }
 
     public List<GameParticipant> getPlayers() {
         return players;
+    }
+
+    public List<GameParticipant> getAlivePlayers() {
+        return players.stream().filter(GameParticipant::isAlive).collect(Collectors.toList());
     }
 }
